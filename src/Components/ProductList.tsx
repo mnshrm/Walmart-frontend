@@ -9,10 +9,10 @@ import {
   Box,
   Pagination,
 } from "@mui/material";
-import { Product } from "../../Models/products";
+import { Product } from "../Models/products";
 import { useDispatch } from "react-redux/es/exports";
-import { AppDispatch } from "../../Store";
-import { cartActions } from "../../Store/cartSlice";
+import { AppDispatch } from "../Store";
+import { cartActions } from "../Store/cartSlice";
 
 const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
   const [page, setPage] = useState<number>(1); // State for current page
@@ -40,7 +40,7 @@ const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
   return (
     <Box>
       <Grid container spacing={2} sx={{ marginTop: "5px" }}>
-        {products.slice(5 * (page - 1), 5 * page).map((product) => (
+        {products.slice(5 * (page - 1), 5 * page).map((product: Product) => (
           <Grid item xs={12} sm={6} md={4} key={product["Product Name"]}>
             <Card sx={{ boxShadow: "none" }}>
               <CardContent>
@@ -48,7 +48,10 @@ const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
                   {product["Product Name"].substring(0, 30) + "..."}
                 </Typography>
                 <Typography variant="subtitle1">
-                  Rs {product.market_price.toFixed(2)}
+                  Rs {product.market_price.toFixed(2)}{" "}
+                  {product.quantity !== undefined
+                    ? `x ${product.quantity}`
+                    : ""}
                 </Typography>
                 <Box display="flex" justifyContent="flex-end">
                   <ButtonGroup sx={{ marginLeft: "auto" }} size="small">
@@ -88,6 +91,7 @@ const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
           page={page}
           count={count}
           onChange={handleChange}
+          color="primary"
         />
       </Box>
     </Box>

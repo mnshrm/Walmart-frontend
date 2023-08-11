@@ -17,9 +17,10 @@ const cartSlice = createSlice({
         (item) => item["Product Name"] === action.payload["Product Name"]
       );
       if (item !== undefined) {
-        item.quantity++;
+        item.quantity!++;
         state.totalPrice += item.market_price;
       } else {
+        console.log("new item added");
         state.items.push({
           ...action.payload,
           quantity: 1,
@@ -37,8 +38,8 @@ const cartSlice = createSlice({
       //   IF ITEM IS PRESENT IN CART
 
       if (item !== undefined) {
-        if (item.quantity > 1) {
-          item.quantity--;
+        if (item.quantity! > 1) {
+          item.quantity!--;
         } else {
           // IF QUANTITY OF THIS PARTICULAR ITEM IN CART IS 1, THEN REMOVE THIS ITEM FROM CART
 

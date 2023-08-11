@@ -1,5 +1,5 @@
 import { Product } from "../../Models/products";
-import ProductList from "./ProductList";
+import ProductList from "../../Components/ProductList";
 import SearchBar from "./SearchBar/SearchBar";
 import { Box } from "@mui/material";
 

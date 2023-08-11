@@ -3,14 +3,11 @@ export interface Product {
   Category: string;
   market_price: number;
   type: string;
-}
-
-export interface ProductInCart extends Product {
-  quantity: number;
+  quantity?: number;
 }
 
 export type Cart = {
-  items: ProductInCart[];
+  items: Product[];
   totalPrice: number;
   numberOfProducts: number;
 };

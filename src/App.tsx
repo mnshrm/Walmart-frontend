@@ -1,4 +1,3 @@
-import "./App.css";
 import Cart from "./Scenes/Cart/Cart";
 import CheckOut from "./Scenes/CheckOut/CheckOut";
 import Error from "./Scenes/Error/Error";
