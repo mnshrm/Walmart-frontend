@@ -10,16 +10,33 @@ import {
   Pagination,
 } from "@mui/material";
 import { Product } from "../../Models/products";
+import { useDispatch } from "react-redux/es/exports";
+import { AppDispatch } from "../../Store";
+import { cartActions } from "../../Store/cartSlice";
 
 const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
+  const [page, setPage] = useState<number>(1); // State for current page
+  const dispatch: AppDispatch = useDispatch(); // Dispatch function to update Cart state
+
+  /**
+   * page state determines the current state
+   * page range from 1 to total number of products divided by 5
+   * handleChange updates the value of page state
+   */
   const count = Math.ceil(products.length / 5);
-
-  const [page, setPage] = useState<number>(1);
-
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
+  /**
+   * Following functions are to update cart state
+   */
+  const addToCart: (item: Product) => void = (item) => {
+    dispatch(cartActions.addItem(item));
+  };
+  const removeFromCart: (item: string) => void = (item) => {
+    dispatch(cartActions.removeItem(item));
+  };
   return (
     <Box>
       <Grid container spacing={2} sx={{ marginTop: "5px" }}>
@@ -35,8 +52,21 @@ const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
                 </Typography>
                 <Box display="flex" justifyContent="flex-end">
                   <ButtonGroup sx={{ marginLeft: "auto" }} size="small">
-                    <Button color="primary">Add</Button>
-                    <Button color="secondary">Remove</Button>
+                    <Button
+                      onClick={addToCart.bind(null, product)}
+                      color="primary"
+                    >
+                      Add
+                    </Button>
+                    <Button
+                      onClick={removeFromCart.bind(
+                        null,
+                        product["Product Name"]
+                      )}
+                      color="secondary"
+                    >
+                      Remove
+                    </Button>
                   </ButtonGroup>
                 </Box>
               </CardContent>

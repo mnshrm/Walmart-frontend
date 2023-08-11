@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { Menu, ShoppingCart } from "@mui/icons-material";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { RootState } from "../../Store";
 
 /**
  * App Bar component which has a heading and a button to toggle MUI drawer
@@ -20,6 +22,8 @@ const Appbar: React.FC<{ onClick: () => void }> = (props) => {
   const goToCart: () => void = () => {
     navigation("/cart");
   };
+
+  const count = useSelector((state: RootState) => state.numberOfProducts);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -56,7 +60,7 @@ const Appbar: React.FC<{ onClick: () => void }> = (props) => {
             }}
             onClick={goToCart}
           >
-            <Badge badgeContent={2} color="success">
+            <Badge badgeContent={count} color="success">
               <ShoppingCart />
             </Badge>
           </IconButton>
