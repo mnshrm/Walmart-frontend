@@ -60,6 +60,13 @@ const products: Product[] = [
   },
 ];
 
+/**
+ * Home component is one in which all products are listed
+ * We have a search bar, where user can search for an item.
+ * All the products are listed with their name and price
+ * and add to cart and remove from cart button.
+ */
+
 const Home: React.FC = () => {
   return (
     <Box sx={{ padding: "10px" }}>
