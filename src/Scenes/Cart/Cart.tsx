@@ -1,10 +1,13 @@
 import React from "react";
 import ProductList from "../../Components/ProductList";
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { RootState } from "../../Store";
 import { useSelector } from "react-redux";
+import { Payment } from "@mui/icons-material";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const Cart: React.FC = () => {
+  const navigate: NavigateFunction = useNavigate();
   const products = useSelector((state: RootState) => state.cart.items);
   const totalItems = useSelector(
     (state: RootState) => state.cart.numberOfProducts
@@ -36,6 +39,18 @@ const Cart: React.FC = () => {
           >
             Quantity: {totalItems}
           </Typography>
+          <Button
+            color="success"
+            variant="contained"
+            sx={{ marginTop: "10px" }}
+            startIcon={<Payment />}
+            onClick={() => {
+              navigate("/cart/checkout");
+            }}
+            disabled={totalItems === 0}
+          >
+            Pay now
+          </Button>
         </CardContent>
       </Card>
       <ProductList products={products} />

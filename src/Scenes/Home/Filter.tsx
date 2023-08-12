@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import store, { AppDispatch, RootState } from "../../Store";
 import {
   productListActions,
-  updateProductList,
+  //   updateProductList,
 } from "../../Store/productSlice";
 import { Product } from "../../Models/products";
 
