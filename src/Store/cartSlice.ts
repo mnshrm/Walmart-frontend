@@ -18,14 +18,13 @@ const cartSlice = createSlice({
       );
       if (item !== undefined) {
         item.quantity!++;
-        state.totalPrice += item.market_price;
       } else {
-        console.log("new item added");
         state.items.push({
           ...action.payload,
           quantity: 1,
         });
       }
+      state.totalPrice += action.payload.market_price;
 
       state.numberOfProducts++;
     },

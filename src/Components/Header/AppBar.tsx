@@ -23,7 +23,7 @@ const Appbar: React.FC<{ onClick: () => void }> = (props) => {
     navigation("/cart");
   };
 
-  const count = useSelector((state: RootState) => state.numberOfProducts);
+  const count = useSelector((state: RootState) => state.cart.numberOfProducts);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

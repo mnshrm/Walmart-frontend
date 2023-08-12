@@ -10,19 +10,23 @@ import {
   Pagination,
 } from "@mui/material";
 import { Product } from "../Models/products";
-import { useDispatch } from "react-redux/es/exports";
-import { AppDispatch } from "../Store";
+import { useDispatch, useSelector } from "react-redux/es/exports";
+import { AppDispatch, RootState } from "../Store";
 import { cartActions } from "../Store/cartSlice";
 
 const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
   const [page, setPage] = useState<number>(1); // State for current page
   const dispatch: AppDispatch = useDispatch(); // Dispatch function to update Cart state
+  const category = useSelector(
+    (state: RootState) => state.productList.category
+  );
 
   /**
    * page state determines the current state
    * page range from 1 to total number of products divided by 5
    * handleChange updates the value of page state
    */
+  products = products.filter((prd) => prd.Category === category);
   const count = Math.ceil(products.length / 5);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);

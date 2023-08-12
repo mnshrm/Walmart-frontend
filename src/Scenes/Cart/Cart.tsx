@@ -5,7 +5,11 @@ import { RootState } from "../../Store";
 import { useSelector } from "react-redux";
 
 const Cart: React.FC = () => {
-  const cart = useSelector((state: RootState) => state);
+  const products = useSelector((state: RootState) => state.cart.items);
+  const totalItems = useSelector(
+    (state: RootState) => state.cart.numberOfProducts
+  );
+  const bill = useSelector((state: RootState) => state.cart.totalPrice);
 
   return (
     <Box sx={{ padding: "10px" }}>
@@ -22,7 +26,7 @@ const Cart: React.FC = () => {
               fontWeight: "bold",
             }}
           >
-            Total Amount : {cart.totalPrice}
+            Total Amount : {bill}
           </Typography>
           <Typography
             variant="subtitle1"
@@ -30,11 +34,11 @@ const Cart: React.FC = () => {
               color: "lightgray",
             }}
           >
-            Quantity: {cart.numberOfProducts}
+            Quantity: {totalItems}
           </Typography>
         </CardContent>
       </Card>
-      <ProductList products={cart.items} />
+      <ProductList products={products} />
     </Box>
   );
 };
