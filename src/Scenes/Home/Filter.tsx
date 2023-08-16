@@ -8,8 +8,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../Store";
 import { updateProductList } from "../../Store/productSlice";
+import { loadingActions } from "../../Store/loading-slice";
 
-const Filter: React.FC = (props) => {
+const Filter: React.FC = () => {
   const category = useSelector(
     (state: RootState) => state.productList.category
   );
@@ -23,6 +24,7 @@ const Filter: React.FC = (props) => {
   const categoryUpdateHandler: (event: SelectChangeEvent<string>) => void = (
     event
   ) => {
+    dispatch(loadingActions.setLoading(true));
     dispatch(updateProductList(event.target.value));
   };
 

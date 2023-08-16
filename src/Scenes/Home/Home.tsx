@@ -6,6 +6,7 @@ import Filter from "./Filter";
 import { Product } from "../../Models/products";
 import { LoaderFunction } from "react-router-dom";
 import { productListActions } from "../../Store/productSlice";
+import { loadingActions } from "../../Store/loading-slice";
 
 /**
  * Home component is one in which all products are listed
@@ -32,16 +33,19 @@ export default Home;
 export const loader: LoaderFunction = async () => {
   const category = store.getState().productList.category;
   const sendRequest = async () => {
-    const result = await fetch(`http://localhost:5000/products/${category}`);
+    const result = await fetch(`http://192.168.1.10:5000/products/${category}`);
     const data = await result.json();
     return data.data;
   };
   try {
+    store.dispatch(loadingActions.setLoading(true));
     const data: Product[] = await sendRequest();
     console.log(data);
     store.dispatch(productListActions.updateProducts(data));
+    store.dispatch(loadingActions.setLoading(false));
   } catch (err) {
     console.log(err);
+    throw new Error("Something went wrong");
   }
 
   return {};

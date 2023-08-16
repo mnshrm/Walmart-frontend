@@ -1,7 +1,15 @@
 import { useState } from "react";
-import { Alert, Box, AlertTitle, Collapse } from "@mui/material";
+import {
+  Alert,
+  Box,
+  AlertTitle,
+  Collapse,
+  LinearProgress,
+} from "@mui/material";
 import Header from "../../Components/Header/Header";
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Store";
 
 /**
  * This is the root container of project.
@@ -15,28 +23,31 @@ import { Outlet } from "react-router-dom";
 
 const RootLayout: React.FC = () => {
   const [open, setOpen] = useState<boolean>(true);
-
+  const loading = useSelector((state: RootState) => state.loading.isLoading);
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "#ededed" }}>
       <Header />
-      <Collapse in={open}>
-        <Alert
-          sx={{
-            margin: "10px",
-            backgroundColor: "rgb(79, 242, 98,0.9)",
-            position: "relative",
-          }}
-          variant="filled"
-          onClose={() => {
-            setOpen(false);
-          }}
-          severity="success"
-        >
-          <AlertTitle>Success</AlertTitle>
-          This is a success alert — <strong>check it out!</strong>
-        </Alert>
-      </Collapse>
-      <Outlet />
+      {loading && <LinearProgress color="success" />}
+      {false && (
+        <Collapse in={open}>
+          <Alert
+            sx={{
+              margin: "10px",
+              backgroundColor: "rgb(79, 242, 98,0.9)",
+              position: "relative",
+            }}
+            variant="filled"
+            onClose={() => {
+              setOpen(false);
+            }}
+            severity="success"
+          >
+            <AlertTitle>Success</AlertTitle>
+            This is a success alert — <strong>check it out!</strong>
+          </Alert>
+        </Collapse>
+      )}
+      {!loading && <Outlet />}
     </Box>
   );
 };

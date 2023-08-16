@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Product } from "../Models/products";
 import { AppDispatch } from ".";
+import { loadingActions } from "./loading-slice";
 
 type ProductSlice = {
   category: string;
@@ -42,7 +43,9 @@ export const updateProductList: (
   return async (dispatch) => {
     // Send request to backend to get products by category
     const sendRequest = async () => {
-      const result = await fetch(`http://localhost:5000/products/${category}`);
+      const result = await fetch(
+        `http://192.168.1.10:5000/products/${category}`
+      );
       const data = await result.json();
       return data.data;
     };
@@ -51,6 +54,8 @@ export const updateProductList: (
       const data = await sendRequest();
       dispatch(productSlice.actions.changeCategory(category));
       dispatch(productSlice.actions.updateProducts(data));
+      console.log("here");
+      dispatch(loadingActions.setLoading(false));
     } catch (err) {
       console.log("There was an error");
     }
