@@ -5,11 +5,13 @@ import {
   AlertTitle,
   Collapse,
   LinearProgress,
+  Button,
 } from "@mui/material";
 import Header from "../../Components/Header/Header";
 import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store";
+import { offerActions } from "../../Store/offerSlice";
 
 /**
  * This is the root container of project.
@@ -22,31 +24,31 @@ import { RootState } from "../../Store";
  */
 
 const RootLayout: React.FC = () => {
-  const [open, setOpen] = useState<boolean>(true);
   const loading = useSelector((state: RootState) => state.loading.isLoading);
+  const { isOffer, offer } = useSelector((state: RootState) => state.offer);
+  const dispatch = useDispatch();
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "#ededed" }}>
       <Header />
       {loading && <LinearProgress color="success" />}
-      {false && (
-        <Collapse in={open}>
-          <Alert
-            sx={{
-              margin: "10px",
-              backgroundColor: "rgb(79, 242, 98,0.9)",
-              position: "relative",
-            }}
-            variant="filled"
-            onClose={() => {
-              setOpen(false);
-            }}
-            severity="success"
-          >
-            <AlertTitle>Success</AlertTitle>
-            This is a success alert — <strong>check it out!</strong>
-          </Alert>
-        </Collapse>
-      )}
+      <Collapse in={isOffer}>
+        <Alert
+          sx={{
+            margin: "10px",
+            backgroundColor: "rgb(79, 242, 97,1)",
+            color: "white",
+            position: "relative",
+          }}
+          variant="outlined"
+          onClose={() => {
+            dispatch(offerActions.removeOffer());
+          }}
+          severity="success"
+        >
+          <AlertTitle>{`${offer.discount}% OFF on purchase of ${offer.quantity} ${offer.product}`}</AlertTitle>
+          <Button variant="contained">Apply</Button>
+        </Alert>
+      </Collapse>
       {!loading && <Outlet />}
     </Box>
   );

@@ -33,14 +33,15 @@ export default Home;
 export const loader: LoaderFunction = async () => {
   const category = store.getState().productList.category;
   const sendRequest = async () => {
-    const result = await fetch(`http://192.168.1.10:5000/products/${category}`);
+    const result = await fetch(
+      `http://localhost:4000/api/v1/products/${category}`
+    );
     const data = await result.json();
-    return data.data;
+    return data.products;
   };
   try {
     store.dispatch(loadingActions.setLoading(true));
     const data: Product[] = await sendRequest();
-    console.log(data);
     store.dispatch(productListActions.updateProducts(data));
     store.dispatch(loadingActions.setLoading(false));
   } catch (err) {
