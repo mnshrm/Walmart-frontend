@@ -52,7 +52,7 @@ export const updateProductList: (
     };
 
     try {
-      const { data: products, offer } = await sendRequest();
+      const { products, offer } = await sendRequest();
       dispatch(productSlice.actions.changeCategory(category));
       dispatch(productSlice.actions.updateProducts(products));
       if (offer) {

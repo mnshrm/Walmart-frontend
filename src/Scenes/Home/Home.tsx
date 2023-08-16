@@ -41,8 +41,8 @@ export const loader: LoaderFunction = async () => {
   };
   try {
     store.dispatch(loadingActions.setLoading(true));
-    const data: Product[] = await sendRequest();
-    store.dispatch(productListActions.updateProducts(data));
+    const products = await sendRequest();
+    store.dispatch(productListActions.updateProducts(products));
     store.dispatch(loadingActions.setLoading(false));
   } catch (err) {
     console.log(err);

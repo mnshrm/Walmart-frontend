@@ -71,11 +71,12 @@ export const sendCartDetails: (c: Cart) => (d: AppDispatch) => void = (
         quantity: itm.quantity!,
         market_price: itm.market_price,
         total_price: itm.market_price * itm.quantity!,
+        productId: itm._id,
       })),
     };
 
     const sendRequest = async () => {
-      const response = await fetch("http://localhost:5000/bills", {
+      const response = await fetch("http://localhost:5000/bill/new", {
         method: "POST",
         body: JSON.stringify(bill),
         headers: {
