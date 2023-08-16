@@ -9,6 +9,7 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 const Cart: React.FC = () => {
   const navigate: NavigateFunction = useNavigate();
   const products = useSelector((state: RootState) => state.cart.items);
+  console.log(products);
   const totalItems = useSelector(
     (state: RootState) => state.cart.numberOfProducts
   );

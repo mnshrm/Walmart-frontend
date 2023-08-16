@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Cart, Product } from "../Models/products";
+import { AppDispatch } from ".";
 
 const cartInitialState: Cart = {
   items: [],
@@ -13,9 +14,7 @@ const cartSlice = createSlice({
   reducers: {
     // TO ADD ITEM INTO CART
     addItem(state, action: PayloadAction<Product>) {
-      const item = state.items.find(
-        (item) => item["Product Name"] === action.payload["Product Name"]
-      );
+      const item = state.items.find((item) => item._id === action.payload._id);
       if (item !== undefined) {
         item.quantity!++;
       } else {
@@ -30,9 +29,7 @@ const cartSlice = createSlice({
     },
     // TO REMOVE ITEM FROM CART
     removeItem(state, action: PayloadAction<string>) {
-      const item = state.items.find(
-        (item) => item["Product Name"] === action.payload
-      );
+      const item = state.items.find((item) => item.product === action.payload);
 
       //   IF ITEM IS PRESENT IN CART
 
@@ -51,7 +48,6 @@ const cartSlice = createSlice({
       }
     },
     emptyCart(state) {
-      console.log("here");
       state.items = [];
       state.numberOfProducts = 0;
       state.totalPrice = 0;
@@ -61,3 +57,43 @@ const cartSlice = createSlice({
 
 export const cartActions = cartSlice.actions;
 export default cartSlice;
+
+export const sendCartDetails: (c: Cart) => (d: AppDispatch) => void = (
+  cart
+) => {
+  return async (dispatch) => {
+    // 1 -> Send the bill to backend
+
+    const bill = {
+      totalPrice: cart.totalPrice,
+      products: cart.items.map((itm) => ({
+        product: itm.product,
+        quantity: itm.quantity!,
+        market_price: itm.market_price,
+        total_price: itm.market_price * itm.quantity!,
+      })),
+    };
+
+    const sendRequest = async () => {
+      const response = await fetch("http://localhost:5000/bills", {
+        method: "POST",
+        body: JSON.stringify(bill),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      return data;
+    };
+
+    try {
+      await sendRequest();
+    } catch (err) {
+      console.log(err);
+    }
+    // 2 -> Empty cart
+    dispatch(cartActions.emptyCart());
+  };
+};

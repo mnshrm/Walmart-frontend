@@ -6,12 +6,8 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import store, { AppDispatch, RootState } from "../../Store";
-import {
-  productListActions,
-  //   updateProductList,
-} from "../../Store/productSlice";
-import { Product } from "../../Models/products";
+import { AppDispatch, RootState } from "../../Store";
+import { updateProductList } from "../../Store/productSlice";
 
 const Filter: React.FC = (props) => {
   const category = useSelector(
@@ -27,8 +23,7 @@ const Filter: React.FC = (props) => {
   const categoryUpdateHandler: (event: SelectChangeEvent<string>) => void = (
     event
   ) => {
-    // dispatch(updateProductList(category));
-    dispatch(productListActions.changeCategory(event.target.value));
+    dispatch(updateProductList(event.target.value));
   };
 
   return (
@@ -57,18 +52,3 @@ const Filter: React.FC = (props) => {
 };
 
 export default Filter;
-
-export const loader: () => void = async () => {
-  const category = store.getState().productList.category;
-  const sendRequest = async () => {
-    const result = await fetch(`/products/${category}`);
-    const data = await result.json();
-    return data;
-  };
-  try {
-    const data: Product[] = await sendRequest();
-    store.dispatch(productListActions.updateProducts(data));
-  } catch (err) {
-    console.log(err);
-  }
-};

@@ -10,23 +10,19 @@ import {
   Pagination,
 } from "@mui/material";
 import { Product } from "../Models/products";
-import { useDispatch, useSelector } from "react-redux/es/exports";
-import { AppDispatch, RootState } from "../Store";
+import { useDispatch } from "react-redux/es/exports";
+import { AppDispatch } from "../Store";
 import { cartActions } from "../Store/cartSlice";
 
 const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
   const [page, setPage] = useState<number>(1); // State for current page
   const dispatch: AppDispatch = useDispatch(); // Dispatch function to update Cart state
-  const category = useSelector(
-    (state: RootState) => state.productList.category
-  );
 
   /**
    * page state determines the current state
    * page range from 1 to total number of products divided by 5
    * handleChange updates the value of page state
    */
-  products = products.filter((prd) => prd.Category === category);
   const count = Math.ceil(products.length / 5);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -40,16 +36,17 @@ const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
   };
   const removeFromCart: (item: string) => void = (item) => {
     dispatch(cartActions.removeItem(item));
+    dispatch(cartActions.removeItem(item));
   };
   return (
     <Box>
       <Grid container spacing={2} sx={{ marginTop: "5px" }}>
         {products.slice(5 * (page - 1), 5 * page).map((product: Product) => (
-          <Grid item xs={12} sm={6} md={4} key={product["Product Name"]}>
+          <Grid item xs={12} sm={6} md={4} key={product._id}>
             <Card sx={{ boxShadow: "none" }}>
               <CardContent>
                 <Typography variant="h6">
-                  {product["Product Name"].substring(0, 30) + "..."}
+                  {product.product.substring(0, 30) + "..."}
                 </Typography>
                 <Typography variant="subtitle1">
                   Rs {product.market_price.toFixed(2)}{" "}
@@ -66,10 +63,7 @@ const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
                       Add
                     </Button>
                     <Button
-                      onClick={removeFromCart.bind(
-                        null,
-                        product["Product Name"]
-                      )}
+                      onClick={removeFromCart.bind(null, product.product)}
                       color="secondary"
                     >
                       Remove

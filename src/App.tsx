@@ -1,7 +1,7 @@
 import Cart from "./Scenes/Cart/Cart";
 import CheckOut from "./Scenes/CheckOut/CheckOut";
 import Error from "./Scenes/Error/Error";
-import Home from "./Scenes/Home/Home";
+import Home, { loader as homeLoader } from "./Scenes/Home/Home";
 import RootLayout from "./Scenes/Root/RootLayout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -16,6 +16,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+        loader: homeLoader,
       },
       {
         path: "/cart",

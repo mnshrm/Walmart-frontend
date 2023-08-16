@@ -1,8 +1,11 @@
 import ProductList from "../../Components/ProductList";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
-import { RootState } from "../../Store";
+import store, { RootState } from "../../Store";
 import Filter from "./Filter";
+import { Product } from "../../Models/products";
+import { LoaderFunction } from "react-router-dom";
+import { productListActions } from "../../Store/productSlice";
 
 /**
  * Home component is one in which all products are listed
@@ -25,3 +28,21 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+export const loader: LoaderFunction = async () => {
+  const category = store.getState().productList.category;
+  const sendRequest = async () => {
+    const result = await fetch(`http://localhost:5000/products/${category}`);
+    const data = await result.json();
+    return data.data;
+  };
+  try {
+    const data: Product[] = await sendRequest();
+    console.log(data);
+    store.dispatch(productListActions.updateProducts(data));
+  } catch (err) {
+    console.log(err);
+  }
+
+  return {};
+};

@@ -8,9 +8,10 @@ import {
   Alert,
   Stack,
 } from "@mui/material";
-import { cartActions } from "../../Store/cartSlice";
+import { sendCartDetails } from "../../Store/cartSlice";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../Store";
 
 interface BankDetails {
   name: string;
@@ -29,7 +30,7 @@ const CheckOut: React.FC = () => {
   });
   const [paymentDone, setPaymentDone] = useState(false);
   const [errors, setErrors] = useState<Partial<BankDetails>>({});
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -59,11 +60,13 @@ const CheckOut: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const cart = useSelector((state: RootState) => state.cart);
+
   const handlePayClick = () => {
     const isValid = validateForm();
     if (isValid) {
       setPaymentDone(true);
-      dispatch(cartActions.emptyCart());
+      dispatch(sendCartDetails(cart));
     }
     return isValid;
   };
