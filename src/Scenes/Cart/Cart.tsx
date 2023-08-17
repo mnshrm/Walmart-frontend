@@ -15,6 +15,8 @@ const Cart: React.FC = () => {
   );
   const bill = useSelector((state: RootState) => state.cart.totalPrice);
 
+  const applied = useSelector((state: RootState) => state.offer.appliedOffer);
+
   return (
     <Box sx={{ padding: "10px" }}>
       <Card
@@ -40,6 +42,16 @@ const Cart: React.FC = () => {
           >
             Quantity: {totalItems}
           </Typography>
+          {applied && (
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color: "green",
+              }}
+            >
+              OFFER APPLIED
+            </Typography>
+          )}
           <Button
             color="success"
             variant="contained"

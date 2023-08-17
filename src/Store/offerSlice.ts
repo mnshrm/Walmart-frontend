@@ -1,25 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type OfferDetail = {
+import { Product } from "../Models/products";
+export type OfferDetail = {
+  product?: Product;
   quantity?: number;
   discount?: number;
-  product?: string;
-  productID?: string;
 };
 
 type Offer = {
+  appliedOffer: boolean;
   isOffer: boolean;
   offer: OfferDetail;
 };
 
 const initialState: Offer = {
-  isOffer: true,
-  offer: {
-    quantity: 2,
-    discount: 30,
-    product: "I LOVE YOU FRUIT AND NUT CHOCOLATE",
-    productID: "abc",
-  },
+  appliedOffer: false,
+  isOffer: false,
+  offer: {},
 };
 
 const offerSlice = createSlice({
@@ -27,10 +23,12 @@ const offerSlice = createSlice({
   initialState,
   reducers: {
     setOffer: (state, action: PayloadAction<OfferDetail>) => {
+      state.appliedOffer = false;
       state.isOffer = true;
       state.offer = action.payload;
     },
     removeOffer: (state) => {
+      state.appliedOffer = true;
       state.isOffer = false;
       state.offer = {};
     },

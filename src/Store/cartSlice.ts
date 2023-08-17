@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Cart, Product } from "../Models/products";
-import { AppDispatch } from ".";
+import store, { AppDispatch } from ".";
+import { OfferDetail } from "./offerSlice";
 
 const cartInitialState: Cart = {
   items: [],
@@ -52,6 +53,26 @@ const cartSlice = createSlice({
       state.numberOfProducts = 0;
       state.totalPrice = 0;
     },
+    addMultiple(state, action: PayloadAction<OfferDetail>) {
+      const item = state.items.find(
+        (item) => item._id === action.payload.product!._id
+      );
+      if (item !== undefined) {
+        item.quantity! += action.payload.quantity!;
+      } else {
+        state.items.push({
+          ...action.payload.product!,
+          quantity: action.payload.quantity!,
+        });
+      }
+      state.totalPrice +=
+        (action.payload.product!.market_price *
+          action.payload.discount! *
+          action.payload.quantity!) /
+        100;
+
+      state.numberOfProducts += action.payload.quantity!;
+    },
   },
 });
 
@@ -89,12 +110,20 @@ export const sendCartDetails: (c: Cart) => (d: AppDispatch) => void = (
       return data;
     };
 
+    dispatch(cartActions.emptyCart());
     try {
       await sendRequest();
     } catch (err) {
       console.log(err);
     }
     // 2 -> Empty cart
-    dispatch(cartActions.emptyCart());
+  };
+};
+
+export const applyOffer: (o: OfferDetail) => (d: AppDispatch) => void = (
+  offer
+) => {
+  return async (dispatch) => {
+    dispatch(cartActions.addMultiple(offer));
   };
 };

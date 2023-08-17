@@ -3,7 +3,6 @@ import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import store, { RootState } from "../../Store";
 import Filter from "./Filter";
-import { Product } from "../../Models/products";
 import { LoaderFunction } from "react-router-dom";
 import { productListActions } from "../../Store/productSlice";
 import { loadingActions } from "../../Store/loading-slice";

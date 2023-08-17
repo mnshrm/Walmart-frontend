@@ -53,6 +53,7 @@ export const updateProductList: (
 
     try {
       const { products, offer } = await sendRequest();
+      console.log(offer);
       dispatch(productSlice.actions.changeCategory(category));
       dispatch(productSlice.actions.updateProducts(products));
       if (offer) {
