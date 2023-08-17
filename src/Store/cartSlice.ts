@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Cart, Product } from "../Models/products";
-import store, { AppDispatch } from ".";
+import { AppDispatch } from ".";
 import { OfferDetail } from "./offerSlice";
 
 const cartInitialState: Cart = {
@@ -97,13 +97,16 @@ export const sendCartDetails: (c: Cart) => (d: AppDispatch) => void = (
     };
 
     const sendRequest = async () => {
-      const response = await fetch("http://localhost:5000/bill/new", {
-        method: "POST",
-        body: JSON.stringify(bill),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://backen-walmart-bkaq85jwc-aman12207.vercel.app/bill/new",
+        {
+          method: "POST",
+          body: JSON.stringify(bill),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
 

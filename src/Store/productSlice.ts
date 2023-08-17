@@ -45,7 +45,7 @@ export const updateProductList: (
     // Send request to backend to get products by category
     const sendRequest = async () => {
       const result = await fetch(
-        `http://localhost:4000/api/v1/products/${category}`
+        `https://backen-walmart-bkaq85jwc-aman12207.vercel.app/api/v1/products/${category}`
       );
       const data = await result.json();
       return data;
